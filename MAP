@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import beta
+
+# Prior parameters
+mu = 0.51852
+sigma_squared = 0.008916
+alpha_prior = mu * ((mu * (1 - mu)) / sigma_squared - 1)
+beta_prior = (1 - mu) * ((mu * (1 - mu)) / sigma_squared - 1)
+
+# Observations
+n = 50  # number of coin tosses
+k = 26  # number of heads observed
+
+# Posterior parameters
+alpha_posterior = alpha_prior + k
+beta_posterior = beta_prior + n - k
+
+# Plotting the posterior Beta distribution
+x = np.linspace(0, 1, 1000)
+plt.plot(x, beta.pdf(x, alpha_posterior, beta_posterior), label='Posterior Distribution')
+plt.title('Posterior Beta Distribution')
+plt.xlabel('Probability of Success (p)')
+plt.ylabel('Density')
+plt.legend()
+plt.show()
+
+# Calculating the MAP estimate
+map_estimate = (alpha_posterior - 1) / (alpha_posterior + beta_posterior - 2)
+print("Maximum A Posteriori (MAP) Estimate:", map_estimate)
